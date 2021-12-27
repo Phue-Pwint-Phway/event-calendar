@@ -27,9 +27,8 @@ class SchedulesController < ApplicationController
 
   # PATCH/PUT /schedules/1
   def update
-    byebug
     @schedule = Schedule.find_by(id: params[:schedule][:id])
-    # schedule = @schedule.update(schedule_params)
+    # schedule = @schedule.update(params[:schedule])
     if @schedule.update(schedule_params)
       render json: @schedule
     else
