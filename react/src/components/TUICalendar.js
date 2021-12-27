@@ -75,107 +75,107 @@ const calendars = [
 
 export default function TuiCalendar() {
 
-  // const cal = useRef(null);
+  const cal = useRef(null);
 
-  // const onClickSchedule = useCallback((e) => {
+  const onClickSchedule = useCallback((e) => {
 
-  //   console.log("Click task schedule")
+    console.log("Click task schedule")
 
-  //   const {id, calendarId} = e.schedule;
-  //   const el = cal.current.calendarInst.getElement(id, calendarId);
+    const {id, calendarId} = e.schedule;
+    const el = cal.current.calendarInst.getElement(id, calendarId);
 
-  //   console.log("onClickTaskSchedule : " + e, el.getBoundingClientRect());
-  // }, []);
+    console.log("onClickTaskSchedule : " + e, el.getBoundingClientRect());
+  }, []);
 
-  // const onBeforeCreateSchedule = useCallback((taskScheduleData) => {
-  //   console.log("aaa")
-  //   console.log("Create task schedule : " + JSON.stringify(taskScheduleData.calendarId));
+  const onBeforeCreateSchedule = useCallback((taskScheduleData) => {
+    console.log("aaa")
+    console.log("Create task schedule : " + JSON.stringify(taskScheduleData.calendarId));
 
-  //   const schedule = {
-  //     id: String(Math.random()),
-  //     calendarId: taskScheduleData.calendarId,
-  //     isAllDay: taskScheduleData.isAllDay,
-  //     category: taskScheduleData.isAllDay ? "all Day" : "time",
-  //     title: taskScheduleData.title,
-  //     start: taskScheduleData.start,
-  //     end: taskScheduleData.end,
-  //     location: taskScheduleData.location,
-  //     state: taskScheduleData.state,
-  //     dueDateClass: "",
-  //   };
+    const schedule = {
+      id: String(Math.random()),
+      calendarId: taskScheduleData.calendarId,
+      isAllDay: taskScheduleData.isAllDay,
+      category: taskScheduleData.isAllDay ? "all Day" : "time",
+      title: taskScheduleData.title,
+      start: taskScheduleData.start,
+      end: taskScheduleData.end,
+      location: taskScheduleData.location,
+      state: taskScheduleData.state,
+      dueDateClass: "",
+    };
     
-  //   // save task schedule
-  //   cal.current.calendarInst.createSchedules([schedule]);
-  // }, []);
+    // save task schedule
+    cal.current.calendarInst.createSchedules([schedule]);
+  }, []);
 
-  // const onBeforeDeleteSchedule = useCallback((res) => {
-  //   console.log("Delete task schedule")
-  //   console.log(res)
+  const onBeforeDeleteSchedule = useCallback((res) => {
+    console.log("Delete task schedule")
+    console.log(res)
 
-  //   const {id, calendarId} = res.schedule;
+    const {id, calendarId} = res.schedule;
 
-  //   // delete task schedule
-  //   cal.current.calendarInst.deleteSchedule(id, calendarId);
-  // }, []);
+    // delete task schedule
+    cal.current.calendarInst.deleteSchedule(id, calendarId);
+  }, []);
 
-  // const onBeforeUpdateSchedule = useCallback((e) => {
-  //   console.log("Update task schedule")
-  //   console.log(e)
+  const onBeforeUpdateSchedule = useCallback((e) => {
+    console.log("Update task schedule")
+    console.log(e)
 
-  //   const { schedule, changes } = e;
+    const { schedule, changes } = e;
 
-  //   cal.current.calendarInst.updateSchedule(
-  //     schedule.id,
-  //     schedule.calendarId, 
-  //     changes,
-  //   );
-  // }, []);
+    cal.current.calendarInst.updateSchedule(
+      schedule.id,
+      schedule.calendarId, 
+      changes,
+    );
+  }, []);
 
-  // function _getFormattedTime(time) {
-  //   const date = new Date(time);
-  //   const h = date.getHours();
-  //   const m = date.getMinutes();
+  function _getFormattedTime(time) {
+    const date = new Date(time);
+    const h = date.getHours();
+    const m = date.getMinutes();
 
-  //   return `${h}:${m}`;
-  // }
+    return `${h}:${m}`;
+  }
 
-  // function _getTimeTemplate(schedule, isAllDay) {
-  //   var html = [];
+  function _getTimeTemplate(schedule, isAllDay) {
+    var html = [];
 
-  //   if(!isAllDay) {
-  //     html.push("<strong>" + _getFormattedTime(schedule.start) + "</strong>");
-  //   }
+    if(!isAllDay) {
+      html.push("<strong>" + _getFormattedTime(schedule.start) + "</strong>");
+    }
 
-  //   if(schedule.isPrivate) {
-  //     html.push('<span class="calendar-font-icon ic-lock-b"></span>');
-  //     html.push("Private");
-  //   }
-  //   else {
-  //     if(schedule.isReadOnly) {
-  //       html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
-  //     }
-  //     else if(schedule.recurrenceRule) {
-  //       html.push('<span class="calendar-font-icon ic-repeat-b></span>');
-  //     }
-  //     else if(schedule.attendees.slength) {
-  //       html.push('<span class="calendar-font-icon ic-user-b"></span>')
-  //     }
-  //     else if(schedule.location) {
-  //       html.push('<span class="calendar-font-icon ic-location-b"></span>')
-  //     }
-  //     html.push(" " + schedule.title);
-  //   }
-  //   return html.join("");
-  // }
+    if(schedule.isPrivate) {
+      html.push('<span class="calendar-font-icon ic-lock-b"></span>');
+      html.push("Private");
+    }
+    else {
+      if(schedule.isReadOnly) {
+        html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
+      }
+      else if(schedule.recurrenceRule) {
+        html.push('<span class="calendar-font-icon ic-repeat-b></span>');
+      }
+      else if(schedule.attendees.slength) {
+        html.push('<span class="calendar-font-icon ic-user-b"></span>')
+      }
+      else if(schedule.location) {
+        html.push('<span class="calendar-font-icon ic-location-b"></span>')
+      }
+      html.push(" " + schedule.title);
+    }
+    return html.join("");
+  }
 
-  // const templates = {
-  //   time: function (schedule) {
-  //     console.log("SCHEDULE")
-  //     console.log(schedule)
+  const templates = {
+    time: function (schedule) {
+      console.log("SCHEDULE")
+      console.log(schedule)
 
-  //     return _getTimeTemplate(schedule, false);
-  //   }
-  // };
+      return _getTimeTemplate(schedule, false);
+    }
+  };
   
   return (
     <div className="App">

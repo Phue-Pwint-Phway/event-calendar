@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get "api/schedule", to: "schedules#index"
   post "api/schedule/create", to: "schedules#create"
   patch "api/schedule/update", to: "schedules#update"
-  delete "api/schedule/destroy", to: "schedules#destroy"
+  post "api/schedule/destroy", to: "schedules#destroy"
 
   # post
   get "api/post", to: "posts#index"

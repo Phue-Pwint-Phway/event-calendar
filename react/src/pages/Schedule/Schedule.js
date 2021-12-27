@@ -9,9 +9,9 @@ import axios from "../../axios";
 import React from "react";
 // import { propTypes } from "react-bootstrap/esm/Image";
 
-export default class TuiCalendar extends React.Component  {
-  constructor (props) {
-    super (props);
+export default class Schedule extends React.Component {
+  constructor(props) {
+    super(props);
 
     this.BASE_API_ROUTE = "/schedule";
 
@@ -19,17 +19,17 @@ export default class TuiCalendar extends React.Component  {
     this.state = {
       error: [],
       schedules: [],
+      calendars: [],
     };
     this.fetchSchedule = this.fetchSchedule.bind(this);
     this.createSchedule = this.createSchedule.bind(this);
-    this.onClickSchedule = this.onClickSchedule.bind(this);
     this.updateScheduleTask = this.updateScheduleTask.bind(this);
     this.deleteSchedule = this.deleteSchedule.bind(this);
-    console.log(props)
+    // console.log(props)
   }
 
 
-  
+
   // :calendarId, :title, :body, :start, :end, :goingDuration, :comingDuration, :isAllDay, :category,
   // :dueDateClass, :location, :recurrenceRule, :isPending, :isFocused, :isVisible, :isReadOnly,
   // :isPrivate, :color, :bgColor, :dragBgColor, :borderColor, :customStyle, :state
@@ -48,30 +48,30 @@ export default class TuiCalendar extends React.Component  {
     };
 
     this.useRef.current.calendarInst.createSchedules([schedule]);
-    console.log(this.useref)
-    console.log(schedule)
+    // console.log(this.useref)
+    // console.log(schedule)
 
     this.CREATE_API_ROUTE = "/schedule/create";
-      axios.post(this.CREATE_API_ROUTE, schedule)
-        .then(
-          // this.setState(
-          //   {
-          //     schedules: [...this.state.schedules, schedule]
-          //   }
-          // ),
-          () => this.props.history.push("/schedule")
-          // alert("success created")
-        )
-        .catch(error => {
-          if (error.response) {
-            console.error(error.response.data);
-            if (error.response.data.errors) {
-              this.setState({
-                errors: error.response.data.errors
-              });
-            }
+    axios.post(this.CREATE_API_ROUTE, schedule)
+      .then(
+        // this.setState(
+        //   {
+        //     schedules: [...this.state.schedules, schedule]
+        //   }
+        // ),
+        () => this.props.history.push("/schedule")
+        
+      )
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          if (error.response.data.errors) {
+            this.setState({
+              errors: error.response.data.errors
+            });
           }
-        });
+        }
+      });
   }
 
   updateScheduleTask(ScheduleData) {
@@ -81,55 +81,63 @@ export default class TuiCalendar extends React.Component  {
       changes
     );
 
-    
+
     this.UPDATE_API_ROUTE = "/schedule/update";
-      axios.patch(this.UPDATE_API_ROUTE, { schedule: schedule })
-        .then(
-          // this.setState({
-          //   schedules: schedule
-          // })
-          () => this.props.history.push("/schedule")
-        )
-        .catch(error => {
-          if (error.response) {
-            console.error(error.response.data);
-            if (error.response.data.errors) {
-              this.setState({
-                errors: error.response.data.errors
-              });
-            }
-          }
-        });
-      }
-
-      deleteSchedule(scheduleData) {
-        const { id, calendarId } = scheduleData.schedule;
-        this.useRef.current.calendarInst.deleteSchedule(id);
-        const { schedules } = this.state;
-        const deletedSchedules = schedules.filter(schedule => schedule.id !== id)
-        this.DELETE_API_ROUTE = "/schedule/destroy";
-        axios.delete(this.DELETE_API_ROUTE, deletedSchedules)
-          .then(
+    axios.patch(this.UPDATE_API_ROUTE, { schedule: changes })
+      .then(
+        // this.setState({
+        //   schedules: schedule
+        // })
+        () => this.props.history.push("/schedule")
+      )
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          if (error.response.data.errors) {
             this.setState({
-              schedules: deletedSchedules
-            })
-            // alert("success updated")
-          )
-          .catch(error => {
-            if (error.response) {
-              console.error(error.response.data);
-              if (error.response.data.errors) {
-                this.setState({
-                  errors: error.response.data.errors
-                });
-              }
-            }
-          });
-      }
+              errors: error.response.data.errors
+            });
+          }
+        }
+      });
+  }
 
-  fetchSchedule (url = this.BASE_API_ROUTE) {
+  deleteSchedule(scheduleData) {
+    console.log(scheduleData)
+    const { id, calendarId } = scheduleData.schedule;
+    // console.log(scheduleData.schedule)
+    // this.useRef.current.calendarInst.deleteSchedule(id, calendarId);
+    // console.log(this.useRef)
+    // console.log(id)
+    // const { schedules } = this.state;
+    // console.log(this.state)
+    // console.log(schedules)
+    // const deletedSchedules = schedules.filter(schedule => schedule.id !== id)
+    // console.log(deletedSchedules)
+    this.DELETE_API_ROUTE = "/schedule/destroy";
+    axios.post(this.DELETE_API_ROUTE, {id: id})
+      .then(
+        // this.setState({
+        //   schedules: deletedSchedules
+        // })
+        () => this.props.history.push("/schedule")
+        // console.log(deletedSchedules)
+      )
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          if (error.response.data.errors) {
+            this.setState({
+              errors: error.response.data.errors
+            });
+          }
+        }
+      });
+  }
+
+  fetchSchedule(url = this.BASE_API_ROUTE) {
     axios.get(url).then(res => {
-      console.log("result" + JSON.stringify(res.data))
+      // console.log("result" + JSON.stringify(res.data))
       this.setState(
         {
           schedules: res.data,
@@ -147,10 +155,10 @@ export default class TuiCalendar extends React.Component  {
         }
       });
   }
-  
+
   componentDidMount() {
     // this._isMounted = true;
-    console.log("mounted")
+    // console.log("mounted")
     this.fetchSchedule();
     // this.createSchedule();
     // this.updateSchedule();
@@ -159,27 +167,53 @@ export default class TuiCalendar extends React.Component  {
 
   render() {
     const schedules = this.state.schedules;
-    console.log(schedules)
+    // console.log(schedules)
+    const calendars = [
+      {
+        id: "1",
+        name: "My Calendar",
+        color: "#ffffff",
+        bgColor: "#9e5fff",
+        dragBgColor: "#9e5fff",
+        borderColor: "#9e5fff"
+      },
+      {
+        id: "2",
+        name: "Company",
+        color: "#ffffff",
+        bgColor: "#F4696A",
+        dragBgColor: "#F4696A",
+        borderColor: "#F4696A"
+      },
+      {
+        id: "3",
+        name: "Office",
+        color: "#ffffff",
+        bgColor: "#00a9ff",
+        dragBgColor: "#00a9ff",
+        borderColor: "#00a9ff"
+      },
+    ]
 
     return (
       <div>
         <TUICalendar
-          ref = {this.useRef}
-          height = "1000px"
-          view = "week"
+          ref={this.useRef}
+          height="1000px"
+          view="week"
           taskView={true}
           // template = {templates}
-          // calendars = {calendars}
-          schedules = {schedules}
-          useCreationPopup = {true}
-          useDetailPopup = {true}
+          calendars = {calendars}
+          schedules={schedules}
+          useCreationPopup={true}
+          useDetailPopup={true}
           // onClickSchedule = {this.onClickSchedule}
-          onBeforeCreateSchedule = {this.createSchedule}
-          onBeforeUpdateSchedule = {this.updateScheduleTask}
-          onBeforeDeleteSchedule = {this.deleteSchedule}
+          onBeforeCreateSchedule={this.createSchedule}
+          onBeforeUpdateSchedule={this.updateScheduleTask}
+          onBeforeDeleteSchedule={this.deleteSchedule}
         />
       </div>
     )
   }
-  
+
 }

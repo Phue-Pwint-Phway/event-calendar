@@ -27,8 +27,9 @@ class SchedulesController < ApplicationController
 
   # PATCH/PUT /schedules/1
   def update
-    @schedule = Schedule.find_by(id: params[:id])
-    schedule = @schedule.update(schedule_params)
+    byebug
+    @schedule = Schedule.find_by(id: params[:schedule][:id])
+    # schedule = @schedule.update(schedule_params)
     if @schedule.update(schedule_params)
       render json: @schedule
     else
@@ -38,6 +39,7 @@ class SchedulesController < ApplicationController
 
   # DELETE /schedules/1
   def destroy
+    @schedule = Schedule.find_by(id: params[:id])
     @schedule.destroy
   end
 
